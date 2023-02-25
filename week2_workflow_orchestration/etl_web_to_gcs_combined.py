@@ -46,7 +46,12 @@ def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
 def write_gcs(path: Path) -> None:
     """Upload local parquet file to GCS"""
     gcs_block = GcsBucket.load("zoomcampgcsbucket")
-    gcs_block.upload_from_path(from_path=path, to_path=path)
+    
+    # ## For slow upload speed
+    # storage.blob._DEFAULT_CHUNKSIZE = 2097152 # 1024 * 1024 B * 2 = 2 MB
+    # storage.blob._MAX_MULTIPART_SIZE = 2097152 # 2 MB
+
+    gcs_block.upload_from_path(from_path=path, to_path=path, timeout=1000)
     return
 
 
