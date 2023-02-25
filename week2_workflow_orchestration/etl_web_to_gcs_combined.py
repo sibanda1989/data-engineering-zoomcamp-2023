@@ -18,7 +18,7 @@ def fetch(dataset_url: str) -> pd.DataFrame:
 
 @task(log_prints=True)
 def clean(df: pd.DataFrame, color: str) -> pd.DataFrame:
-    """Fix dtype issues"""
+    """Fix dtype issues, different columns for yellow and green taxis"""
     if color == "yellow":
         df["tpep_pickup_datetime"] = pd.to_datetime(df["tpep_pickup_datetime"])
         df["tpep_dropoff_datetime"] = pd.to_datetime(df["tpep_dropoff_datetime"])
