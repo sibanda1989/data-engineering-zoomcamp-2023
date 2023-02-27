@@ -45,7 +45,7 @@ def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
 @task
 def write_gcs(path: Path) -> None:
     """Upload local parquet file to GCS"""
-    gcs_block = GcsBucket.load("zoomcampgcsbucket")
+    gcs_block = GcsBucket.load("zoom-gcs") #block name on hp-work laptop
     
     # ## For slow upload speed
     # storage.blob._DEFAULT_CHUNKSIZE = 2097152 # 1024 * 1024 B * 2 = 2 MB
@@ -58,7 +58,7 @@ def write_gcs(path: Path) -> None:
 @flow()
 def etl_web_to_gcs() -> None:
     """The main ETL function"""
-    colors = ["yellow", "green"]
+    colors = ["green", "yellow"] #yellow has large files so changed them around
     
     for idx, color in enumerate(colors): # extract data for yellow and green colors
         for year in range(2019, 2021): #extract years 2019 and 2020 data
