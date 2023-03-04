@@ -28,9 +28,9 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
 
 
 @task()
-def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
+def write_local(df: pd.DataFrame, dataset_file: str) -> Path:
     """Write DataFrame out locally as parquet file"""
-    Path(f"data/{color}").mkdir(parents=True, exist_ok=True)
+    Path(f"data/fhv/").mkdir(parents=True, exist_ok=True)
     path = Path(f"data/fhv/{dataset_file}.parquet")
     df.to_parquet(path, compression="gzip")
     return path
@@ -52,10 +52,10 @@ def etl_web_to_gcs() -> None:
         dataset_file = f"fhv_tripdata_{year}-{month:02}"
         dataset_url = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/fhv/{dataset_file}.csv.gz"
 
-    df = fetch(dataset_url)
-    df_clean = clean(df)
-    path = write_local(df_clean, color, dataset_file)
-    write_gcs(path)
+        df = fetch(dataset_url)
+        df_clean = clean(df)
+        path = write_local(df_clean, dataset_file)
+        write_gcs(path)
 
 
 if __name__ == "__main__":
