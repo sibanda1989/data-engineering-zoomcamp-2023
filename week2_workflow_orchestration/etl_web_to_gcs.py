@@ -31,7 +31,7 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
 def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
     """Write DataFrame out locally as parquet file"""
     Path(f"data/{color}").mkdir(parents=True, exist_ok=True)
-    path = Path(f"data/{color}/{dataset_file}.parquet")
+    path = Path(f"data/fhv/{dataset_file}.parquet")
     df.to_parquet(path, compression="gzip")
     return path
 
@@ -47,7 +47,6 @@ def write_gcs(path: Path) -> None:
 @flow()
 def etl_web_to_gcs() -> None:
     """The main ETL function"""
-    color = "yellow"
     year = 2019
     for month in range(1, 13):
         dataset_file = f"fhv_tripdata_{year}-{month:02}"
