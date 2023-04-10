@@ -46,6 +46,7 @@ def etl_web_to_gcs() -> None:
         df = convert(key, json_data)
         path = write_local(df, key)
         write_gcs(path)
+    print("All elements uploaded in GCS!")        
 
 if __name__ == "__main__":
     etl_web_to_gcs()        
