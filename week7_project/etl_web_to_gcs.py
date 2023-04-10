@@ -21,8 +21,8 @@ def convert(key, json_data) -> pd.DataFrame:
 @task
 def write_local(df:pd.DataFrame, key:str) -> Path:
     """Write dataframe out locally as parquet file"""
-    Path("fpl").mkdir(parents=True, exist_ok=True)
-    path = Path(f"data/{key}.parquet")
+    Path("data/fpl").mkdir(parents=True, exist_ok=True)
+    path = Path(f"data/fpl/{key}.parquet")
     df.to_parquet(path, compression="gzip")
     return path
 
@@ -38,9 +38,10 @@ def etl_web_to_gcs() -> None:
     # The main ETL flow
     url = "https://fantasy.premierleague.com/api/bootstrap-static/"
     json_data = fetch_url_data(url)
+    keys_to_skip = ['game_settings', 'total_players']
     for key in json_data.keys():
         # skip game settings key
-        if key == 'game_settings':
+        if key in keys_to_skip:
             continue
         df = convert(key, json_data)
         path = write_local(df, key)
