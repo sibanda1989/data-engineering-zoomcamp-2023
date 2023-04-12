@@ -5,7 +5,7 @@ from prefect_gcp.cloud_storage import GcsBucket
 import requests
 import os
 
-@task
+@task(retries=3)
 def fetch_url_data(url):
     """Fetch data from API, returns a JSON object"""
     r = requests.get(url)
