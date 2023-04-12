@@ -38,9 +38,9 @@ def etl_web_to_gcs() -> None:
     # The main ETL flow
     url = "https://fantasy.premierleague.com/api/bootstrap-static/"
     json_data = fetch_url_data(url)
-    keys_to_skip = ['game_settings', 'total_players']
+    keys_to_skip = ['game_settings', 'total_players'] # these keys do not have a flat JSON structure
     for key in json_data.keys():
-        # skip game settings key
+        # skip keys in list
         if key in keys_to_skip:
             continue
         df = convert(key, json_data)
