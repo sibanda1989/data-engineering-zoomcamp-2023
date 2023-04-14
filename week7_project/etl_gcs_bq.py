@@ -37,7 +37,8 @@ def write_bq(df: pd.DataFrame) -> None:
         if_exists="append",
     )
 
-def get_file_list(directory: str) -> List[str]:
+@task(name="extract_file_list")
+def get_file_list(directory: str) -> list[str]:
     """Return a list of filenames in a local directory"""
     files = []
     for filename in os.listdir(directory):
@@ -49,11 +50,12 @@ def get_file_list(directory: str) -> List[str]:
 def etl_gcs_to_bq():
     """Main ETL flow to load data into Big Query"""
     file_path = "data/fpl/"
-    files = []
     directory = extract_from_gcs(file_path)
-    files = get_file_list(directory)            
-    df = transform(path)
-    write_bq(df)
+    files = get_file_list(directory)
+    for file in files:
+        df = transform(os.path.join(directory,file))
+        write_bq(df)
+    
 
 
 if __name__ == "__main__":
