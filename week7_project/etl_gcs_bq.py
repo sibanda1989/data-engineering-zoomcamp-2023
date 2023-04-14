@@ -24,13 +24,13 @@ def transform(path: Path) -> pd.DataFrame:
 
 
 @task(name="load")
-def write_bq(df: pd.DataFrame) -> None:
+def write_bq(df: pd.DataFrame, file: str) -> None:
     """Write DataFrame to BiqQuery"""
 
     gcp_credentials_block = GcpCredentials.load("zoomcampcred")
 
     df.to_gbq(
-        destination_table="fantasy_premier_league_2022_23.element_stats",
+        destination_table=f"fantasy_premier_league_2022_23.{file}",
         project_id="data-eng-zoomcamp-project",
         credentials=gcp_credentials_block.get_credentials_from_service_account(),
         #chunksize=500_000,
@@ -54,7 +54,7 @@ def etl_gcs_to_bq():
     files = get_file_list(directory)
     for file in files:
         df = transform(os.path.join(directory,file))
-        write_bq(df)
+        write_bq(df, file[:-8]) #trim off the .parquet extension
     
 
 
