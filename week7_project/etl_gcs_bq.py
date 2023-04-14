@@ -3,12 +3,14 @@ import pandas as pd
 from prefect import flow, task
 from prefect_gcp.cloud_storage import GcsBucket
 from prefect_gcp import GcpCredentials
+import os
 
 
 @task(retries=3, name="extract")
-def extract_from_gcs(file: str) -> Path:
+def extract_from_gcs(file_path: str) -> Path:
     """Download fpl data from GCS"""
-    gcs_path = f"data/fpl/{file}.parquet"
+    #ammending function to default to downloading all files
+    gcs_path = f"data/fpl/"
     gcs_block = GcsBucket.load("zoomcampgcsbucket")
     gcs_block.get_directory(from_path=gcs_path, local_path=f"../data/")
     return Path(f"../data/{gcs_path}")
@@ -35,13 +37,21 @@ def write_bq(df: pd.DataFrame) -> None:
         if_exists="append",
     )
 
+def get_file_list(directory: str) -> List[str]:
+    """Return a list of filenames in a local directory"""
+    files = []
+    for filename in os.listdir(directory):
+        if os.path.isfile(os.path.join(directory, filename)):
+            files.append(filename)
+    return files            
 
 @flow()
 def etl_gcs_to_bq():
     """Main ETL flow to load data into Big Query"""
-    file = "element_stats"
-
-    path = extract_from_gcs(file)
+    file_path = "data/fpl/"
+    files = []
+    directory = extract_from_gcs(file_path)
+    files = get_file_list(directory)            
     df = transform(path)
     write_bq(df)
 
