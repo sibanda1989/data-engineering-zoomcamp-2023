@@ -22,5 +22,3 @@ On inspecting the data, I realised that json output from 2 keys could not be sav
 2. total_players - is an integer representing total active players in the season,
 
 hence I skipped these two in the ETL pipeline to upload into GCS.
-
-
