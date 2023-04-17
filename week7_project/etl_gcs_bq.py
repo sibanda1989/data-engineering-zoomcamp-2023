@@ -11,7 +11,7 @@ def extract_from_gcs(file_path: str) -> Path:
     """Download fpl data from GCS"""
     #ammending function to default to downloading all files
     gcs_path = f"data/fpl/"
-    gcs_block = GcsBucket.load("zoomcampgcsbucket")
+    gcs_block = GcsBucket.load("zoom-gcs")
     gcs_block.get_directory(from_path=gcs_path, local_path=f"../data/")
     return Path(f"../data/{gcs_path}")
 
@@ -27,7 +27,7 @@ def transform(path: Path) -> pd.DataFrame:
 def write_bq(df: pd.DataFrame, file: str) -> None:
     """Write DataFrame to BiqQuery"""
 
-    gcp_credentials_block = GcpCredentials.load("zoomcampcred")
+    gcp_credentials_block = GcpCredentials.load("zoom-gcp-creds")
 
     df.to_gbq(
         destination_table=f"fantasy_premier_league_2022_23.{file}",
