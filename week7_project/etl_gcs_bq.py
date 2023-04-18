@@ -38,7 +38,7 @@ def write_bq(df: pd.DataFrame, file: str) -> None:
     )
 
 @task(name="extract_file_list")
-def get_file_list(directory: str) -> list[str]:
+def get_file_list(directory: str) -> List[str]:
     """Return a list of filenames in a local directory"""
     files = []
     for filename in os.listdir(directory):
