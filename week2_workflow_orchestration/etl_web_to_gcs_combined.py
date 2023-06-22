@@ -48,8 +48,8 @@ def write_gcs(path: Path) -> None:
     gcs_block = GcsBucket.load("zoom-gcs") #block name on hp-work laptop
     
     # ## For slow upload speed
-    # storage.blob._DEFAULT_CHUNKSIZE = 2097152 # 1024 * 1024 B * 2 = 2 MB
-    # storage.blob._MAX_MULTIPART_SIZE = 2097152 # 2 MB
+    gcs_block.blob._DEFAULT_CHUNKSIZE = 2097152 # 1024 * 1024 B * 2 = 2 MB
+    gcs_block.blob._MAX_MULTIPART_SIZE = 2097152 # 2 MB
 
     gcs_block.upload_from_path(from_path=path, to_path=path, timeout=1000)
     return
