@@ -11,3 +11,6 @@ The following sub_topics will be covered:
 3. Analytics Engineering - dbt (data build tool)
 4. Batch Processing - Apache Spark
 5. Stream Processing - Apache Kafka
+
+## Dataset
+I am going to be exploring blockchain transactions on [Blockchain](blockchain.com){:target="_blank"} using their [Websocket API](https://www.blockchain.com/explorer/api/api_websocket){:target="_blank"} .
