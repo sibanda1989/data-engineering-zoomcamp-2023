@@ -13,4 +13,4 @@ The following sub_topics will be covered:
 5. Stream Processing - Apache Kafka
 
 ## Dataset
-I am going to be exploring blockchain transactions on [Blockchain](blockchain.com){:target="_blank"} using their [Websocket API](https://www.blockchain.com/explorer/api/api_websocket){:target="_blank"} .
+I am going to be exploring blockchain transactions on [Blockchain](https://www.blockchain.com) using their [Websocket API](https://www.blockchain.com/explorer/api/api_websocket).
